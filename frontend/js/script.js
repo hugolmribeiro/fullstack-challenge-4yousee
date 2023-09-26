@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
   fetch(apiUrl)
     .then((response) => response.json())
     .then((data) => {
+      document.title = data._device._name;
       title.textContent = data._device._name;
       data._plans.forEach((plan) => {
         const row = document.createElement("tr");
