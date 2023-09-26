@@ -2,15 +2,21 @@ import fs from "fs";
 import Locality from "../entities/Locality";
 import Plan from "../entities/Plan";
 import Schedule from "../entities/Schedule";
+import PlanResponse from "../response/PlanResponse";
+import Device from "../entities/Device";
 
 class PlansService {
-  async getPlans() {
+  async getPlans(): Promise<PlanResponse> {
     const data = await this.readFileAsync("data.json", "utf8");
     const jsonData = JSON.parse(data);
     let plans = jsonData.plans.map((plan: any) => this.mount(plan));
     plans = this.verifyStartDate(plans);
     plans = this.verifyLocalityPriority(plans);
-    return plans;
+    const response = new PlanResponse(
+      new Device(jsonData.Aparelho.name),
+      plans
+    );
+    return response;
   }
 
   private mount(plan: any): Plan {
