@@ -1,11 +1,11 @@
-const express = require("express");
-const plansRoutes = require("./src/routes/plans");
+import express from "express";
+import plansRoutes from "./routes/plans";
 
 const app = express();
 
 app.use("/api", plansRoutes);
 
-app.use((req, res, next) => {
+app.use((req: any, res: any, next: any) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -15,7 +15,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use((error, _req, res, _next) => {
+app.use((error: any, _req: any, res: any, _next: any) => {
   res
     .status(error.statusCode)
     .json({ message: error.message || "Internal server error" });
