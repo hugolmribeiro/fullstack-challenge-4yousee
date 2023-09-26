@@ -1,21 +1,16 @@
 import fs from "fs";
+import Locality from "../entities/Locality";
 import Plan from "../entities/Plan";
 import Schedule from "../entities/Schedule";
-import Locality from "../entities/Locality";
 
-class PlanController {
-  async plans(req: any, res: any): Promise<void> {
-    try {
-      const data = await this.readFileAsync("data.json", "utf8");
-      const jsonData = JSON.parse(data);
-      let plans = jsonData.plans.map((plan: any) => this.mount(plan));
-      plans = this.verifyStartDate(plans);
-      plans = this.verifyLocalityPriority(plans);
-      res.status(200).json(plans);
-    } catch (error) {
-      console.error("Erro ao analisar o JSON:", error);
-      res.status(500).json({ error: "Erro ao processar os planos" });
-    }
+class PlansService {
+  async getPlans() {
+    const data = await this.readFileAsync("data.json", "utf8");
+    const jsonData = JSON.parse(data);
+    let plans = jsonData.plans.map((plan: any) => this.mount(plan));
+    plans = this.verifyStartDate(plans);
+    plans = this.verifyLocalityPriority(plans);
+    return plans;
   }
 
   private mount(plan: any): Plan {
@@ -71,5 +66,4 @@ class PlanController {
     });
   }
 }
-
-export default PlanController;
+export default PlansService;
